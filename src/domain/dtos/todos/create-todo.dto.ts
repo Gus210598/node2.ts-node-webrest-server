@@ -1,6 +1,4 @@
 
-
-
 export class CreateTodoDto {
 
     private constructor (
@@ -13,7 +11,7 @@ export class CreateTodoDto {
 
         const { text } = props;
 
-        if ( !text ) return []
+        if ( !text ) return ['Text property is requred', undefined]
 
 
         return [ undefined, new CreateTodoDto(text ) ];
