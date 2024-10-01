@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { TodosController } from "./controller";
+import { TodoDatasourceImpl } from "../../infrastructure/datasource/todo.datasource.impl";
+import { TodoRepositoryImpl } from "../../infrastructure/respositories/todo.repository.impl";
 
 
 export class TodoRoutes {
@@ -8,17 +10,22 @@ export class TodoRoutes {
 
         const router = Router();
 
-            //* Routes
-            const todoController = new TodosController();
+        const datasource = new TodoDatasourceImpl();
 
-            router.get('/', todoController.getTodos );
-            router.get('/:id', todoController.getTodosById );
+        const todoRepository = new TodoRepositoryImpl( datasource );
 
-            router.post('/', todoController.createTodo );
-            
-            router.put('/:id', todoController.updateTodo );
 
-            router.delete('/:id', todoController.deleteTodo );
+        //* Routes
+        const todoController = new TodosController( todoRepository );
+
+        router.get('/', todoController.getTodos );
+        router.get('/:id', todoController.getTodosById );
+
+        router.post('/', todoController.createTodo );
+        
+        router.put('/:id', todoController.updateTodo );
+
+        router.delete('/:id', todoController.deleteTodo );
 
         return router;
     }
